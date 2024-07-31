@@ -78,9 +78,9 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
     && apt-get update \
     && apt-get -y install --no-install-recommends ./odoo.deb \
     && rm -rf /var/lib/apt/lists/* odoo.deb
-COPY ./odoo_17.0+e.latest_all.db /
-RUN apt-get -y install --no-install-recommends ./odoo_17.0+e.latest_all.db \
-    && rm -rf /var/lib/apt/lists/* odoo_17.0+e.latest_all.db
+COPY ./odoo_17.0+e.latest_all.deb /
+RUN apt-get -y install --no-install-recommends ./odoo_17.0+e.latest_all.deb \
+    && rm -rf /var/lib/apt/lists/* odoo_17.0+e.latest_all.deb
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
