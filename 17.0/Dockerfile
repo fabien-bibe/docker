@@ -78,16 +78,22 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
     && apt-get update \
     && apt-get -y install --no-install-recommends ./odoo.deb \
     && rm -rf /var/lib/apt/lists/* odoo.deb
+COPY ./odoo_17.0+e.latest_all.db /
+RUN apt-get -y install --no-install-recommends ./odoo_17.0+e.latest_all.db \
+    && rm -rf /var/lib/apt/lists/* odoo_17.0+e.latest_all.db
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
 
+
 # Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN chown odoo /etc/odoo/odoo.conf \
     && mkdir -p /mnt/extra-addons \
-    && chown -R odoo /mnt/extra-addons
-VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
+    && chown -R odoo /mnt/extra-addons \
+    && mkdir -p /mnt/enterprise \
+    && chown -R odoo /mnt/enterprise
+VOLUME ["/var/lib/odoo", "/mnt/extra-addons", "/mnt/enterprise"]
 
 # Expose Odoo services
 EXPOSE 8069 8071 8072
